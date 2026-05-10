@@ -1,0 +1,41 @@
+@import url('https://googleapis.com');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #333; background-color: #f8fafc; }
+.container { width: 90%; max-width: 1100px; margin: 0 auto; }
+
+/* HEADER */
+header { background-color: #27ae60; color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
+.nav-flex { display: flex; justify-content: space-between; align-items: center; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; }
+.nav-links { display: flex; list-style: none; gap: 20px; align-items: center; }
+.nav-links a { text-decoration: none; color: white; font-size: 0.9rem; }
+.btn-nav { background: white; padding: 8px 15px; border-radius: 5px; }
+.btn-nav a { color: #27ae60 !important; font-weight: 600; }
+
+/* HERO (2 KOLOM) */
+.hero { display: flex; align-items: center; gap: 50px; padding: 80px 0; }
+.hero-text { flex: 1; }
+.hero-text h1 { font-size: 2.8rem; line-height: 1.2; color: #2c3e50; margin-bottom: 20px; }
+.hero-text p { color: #7f8c8d; margin-bottom: 30px; font-size: 1.1rem; }
+.btn-main { display: inline-block; background: #27ae60; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: 600; }
+.hero-image { flex: 1; }
+.hero-image img { width: 100%; border-radius: 10px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+/* JADWAL (3 KOLOM) */
+.features { padding: 60px 0; text-align: center; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; text-align: left; }
+.card { background: white; padding: 25px; border-radius: 10px; border: 1px solid #edf2f7; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+
+/* LAPOR & TESTI (2 KOLOM) */
+.lapor-flex { display: flex; gap: 50px; padding: 60px 0; }
+.testimonial-area { flex: 1; }
+.testi-card { background: #eef9f1; padding: 25px; border-radius: 10px; border-left: 5px solid #27ae60; font-style: italic; }
+.form-area { flex: 1.5; background: white; padding: 35px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+.form-row { display: flex; gap: 15px; }
+input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 5px; background: #f8fafc; }
+.btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 5px; font-weight: 700; cursor: pointer; }
+
+footer { background: #2c3e50; color: white; padding: 30px 0; text-align: center; font-size: 0.8rem; }
+
+@media (max-width: 768px) { .hero, .card-grid, .lapor-flex { flex-direction: column; grid-template-columns: 1fr; } }

@@ -112,8 +112,7 @@ export default async function DaftarWargaPage(props: {
 // Styling Object untuk Stats
 const statCard = {
   backgroundColor: '#fff',
-  padding: '25px',
-  borderRadius: '12px',
+  padding: '25px',  borderRadius: '12px',
   boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
   textAlign: 'center' as const,
   display: 'flex',

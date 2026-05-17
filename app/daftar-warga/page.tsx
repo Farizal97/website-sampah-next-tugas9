@@ -1,12 +1,7 @@
 "use client"
-import { useState, useEffect, useOptimistic, startTransition } from 'react'
+import { useState, useEffect, useOptimistic, startTransition, useMemo } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 interface Warga {
   id: string
@@ -20,6 +15,12 @@ export default function DaftarWargaPage() {
   const pathname = usePathname()
   const { replace } = useRouter()
 
+  // FIX ZERO WARNINGS: Memindahkan inisialisasi langsung ke dalam komponen (Singleton-safe)
+  const supabase = useMemo(() => createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  ), [])
+
   // State Manajemen Input & Notifikasi
   const [namaInput, setNamaInput] = useState('')
   const [alamatInput, setAlamatInput] = useState('')
@@ -31,12 +32,16 @@ export default function DaftarWargaPage() {
   const [dataWarga, setDataWarga] = useState<Warga[]>([])
   const [searchTerm, setSearchTerm] = useState(searchParams.get('query')?.toString() || '')
 
+  type OptimisticWargaAction =
+    | { action: 'delete'; id: string }
+    | { action: 'create'; id: string; newWarga: Warga }
+
   // 1. PERFORMANCE & UX: OPTIMISTIC UI LAYOUT (Sesuai PDF Bab 2)
-  const [optimisticWarga, setOptimisticWarga] = useOptimistic(
+  const [optimisticWarga, setOptimisticWarga] = useOptimistic<Warga[], OptimisticWargaAction>(
     dataWarga,
-    (state, { action, id, newWarga }) => {
-      if (action === 'delete') return state.filter((w) => w.id !== id)
-      if (action === 'create' && newWarga) return [newWarga, ...state]
+    (state, action) => {
+      if (action.action === 'delete') return state.filter((w) => w.id !== action.id)
+      if (action.action === 'create') return [action.newWarga, ...state]
       return state
     }
   )
@@ -57,7 +62,7 @@ export default function DaftarWargaPage() {
 
   useEffect(() => {
     fetchWarga()
-  }, [searchParams])
+  }, [searchParams, supabase])
 
   // 3. CREATE DATA: INSERT DATA WITH SYSTEM UI STATE
   const handleSimpanData = async (e: React.FormEvent) => {

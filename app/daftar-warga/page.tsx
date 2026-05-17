@@ -36,15 +36,17 @@ export default function DaftarWargaPage() {
     | { action: 'delete'; id: string }
     | { action: 'create'; id: string; newWarga: Warga }
 
+  type OptimisticWargaSetter = (action: OptimisticWargaAction) => void
+
   // 1. PERFORMANCE & UX: OPTIMISTIC UI LAYOUT (Sesuai PDF Bab 2)
   const [optimisticWarga, setOptimisticWarga] = useOptimistic<Warga[], OptimisticWargaAction>(
     dataWarga,
-    (state, action) => {
+    (state, action: OptimisticWargaAction) => {
       if (action.action === 'delete') return state.filter((w) => w.id !== action.id)
       if (action.action === 'create') return [action.newWarga, ...state]
       return state
     }
-  )
+  ) as [Warga[], OptimisticWargaSetter]
 
   // 2. READINESS AUDIT: FETCH DATA TANPA LOGS (Sesuai PDF Bab 1)
   const fetchWarga = async () => {
@@ -78,7 +80,7 @@ export default function DaftarWargaPage() {
     const newRecord: Warga = { id: tempId, nama: namaInput, alamat: alamatInput, status: statusInput }
 
     startTransition(() => {
-      setOptimisticWarga({ action: 'create', id: tempId, newWarga: newRecord })
+      setOptimisticWarga({ action: 'create', id: tempId, newWarga: newRecord } as OptimisticWargaAction)
     })
 
     try {
@@ -105,7 +107,7 @@ export default function DaftarWargaPage() {
     setSystemMessage(null)
     
     startTransition(() => {
-      setOptimisticWarga({ action: 'delete', id })
+      setOptimisticWarga({ action: 'delete', id } as OptimisticWargaAction)
     })
 
     try {
